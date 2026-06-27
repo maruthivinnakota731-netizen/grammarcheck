@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Grammar Checker</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px;
+}
+
+.container{
+background:white;
+width:900px;
+max-width:100%;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px rgba(0,0,0,.3);
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+color:#2c5364;
+}
+
+textarea{
+width:100%;
+height:180px;
+padding:15px;
+font-size:16px;
+border:2px solid #ddd;
+border-radius:10px;
+resize:none;
+outline:none;
+margin-bottom:15px;
+}
+
+.buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:20px;
+}
+
+button{
+padding:12px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+color:white;
+transition:.3s;
+}
+
+.check{
+background:#28a745;
+}
+
+.copy{
+background:#007bff;
+}
+
+.clear{
+background:#dc3545;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+.output{
+background:#f4f4f4;
+padding:15px;
+border-radius:10px;
+min-height:150px;
+white-space:pre-wrap;
+font-size:17px;
+}
+
+.stats{
+display:flex;
+justify-content:space-between;
+margin-top:15px;
+font-weight:bold;
+}
+
+footer{
+text-align:center;
+margin-top:20px;
+color:gray;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🤖 AI Grammar Checker</h1>
+
+<textarea id="input" placeholder="Type your paragraph here..."></textarea>
+
+<div class="buttons">
+
+<button class="check" onclick="checkGrammar()">Check Grammar</button>
+
+<button class="copy" onclick="copyText()">Copy</button>
+
+<button class="clear" onclick="clearText()">Clear</button>
+
+</div>
+
+<div class="output" id="output">
+Corrected text will appear here...
+</div>
+
+<div class="stats">
+<span id="words">Words : 0</span>
+<span id="chars">Characters : 0</span>
+</div>
+
+<footer>
+Made with HTML CSS JavaScript
+</footer>
+
+</div>
+
+<script>
+
+const input=document.getElementById("input");
+
+input.addEventListener("input",updateStats);
+
+function updateStats(){
+
+let text=input.value;
+
+document.getElementById("chars").innerHTML="Characters : "+text.length;
+
+let words=text.trim()==""?0:text.trim().split(/\s+/).length;
+
+document.getElementById("words").innerHTML="Words : "+words;
+
+}
+
+function checkGrammar(){
+
+let text=input.value;
+
+if(text==""){
+alert("Enter some text");
+return;
+}
+
+let corrected=text;
+
+// Basic corrections
+
+corrected=corrected.replace(/\bi\b/g,"I");
+
+corrected=corrected.replace(/\bdont\b/gi,"don't");
+
+corrected=corrected.replace(/\bcant\b/gi,"can't");
+
+corrected=corrected.replace(/\bwont\b/gi,"won't");
+
+corrected=corrected.replace(/\bim\b/gi,"I'm");
+
+corrected=corrected.replace(/\bu\b/gi,"you");
+
+corrected=corrected.replace(/\bur\b/gi,"your");
+
+corrected=corrected.replace(/\bteh\b/gi,"the");
+
+corrected=corrected.replace(/\brecieve\b/gi,"receive");
+
+corrected=corrected.replace(/\bseperate\b/gi,"separate");
+
+corrected=corrected.replace(/\s+/g," ");
+
+corrected=corrected.replace(/\s+\./g,".");
+
+corrected=corrected.replace(/\s+,/g,",");
+
+corrected=corrected.replace(/(^\w|\.\s*\w)/g,function(c){
+return c.toUpperCase();
+});
+
+document.getElementById("output").innerHTML=corrected;
+
+}
+
+function copyText(){
+
+let text=document.getElementById("output").innerText;
+
+navigator.clipboard.writeText(text);
+
+alert("Copied");
+
+}
+
+function clearText(){
+
+input.value="";
+
+document.getElementById("output").innerHTML="Corrected text will appear here...";
+
+updateStats();
+
+}
+
+</script>
+
+</body>
+</html>
